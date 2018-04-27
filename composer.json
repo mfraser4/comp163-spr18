@@ -1,0 +1,17 @@
+{
+    "name": "mark/mooch",
+    "description": "COMP 163 Moocher Project",
+    "type": "project",
+    "require": {
+        "php": "^7.1",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "require-dev": {
+    },
+    "authors": [
+        {
+            "name": "Mark Fraser",
+            "email": "m_fraser3@u.pacific.edu"
+        }
+    ]
+}
