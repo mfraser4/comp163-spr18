@@ -85,10 +85,10 @@
             if (isset($_POST['login']) && !empty($_POST['username']) 
                && !empty($_POST['password'])) {
                require __DIR__ . '/vendor/autoload.php';
-               $dotenv = new Dotenv\Dotenv(__DIR__);
-               $dotenv->load();
-               $dotenv->required(['USER']);
-               $dotenv->required(['PASSWORD']);
+               // $dotenv = new Dotenv\Dotenv(__DIR__);
+               // $dotenv->load();
+               // $dotenv->required(['USER']);
+               // $dotenv->required(['PASSWORD']);
 				   $user = getenv('USER');
                $password = getenv('PASSWORD');
                if ($_POST['username'] == $user && 
