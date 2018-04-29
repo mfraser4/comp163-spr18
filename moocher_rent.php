@@ -1,6 +1,8 @@
 <?php
 include("top.html");
 include("moocher_shared.php");
+if (!$_SESSION['valid'])
+	header("Location: index.php");
 ?>
 	<br>
 	<h2> Here is the rent log:</h2>
@@ -8,6 +10,11 @@ include("moocher_shared.php");
 		print_query();
 	?>
   </body>
+      <form action="moocher_home.php" method="get">	  
+      <div>
+        <input type="submit" value="Home" /> 
+      </div>
+    </form>
 </html>
 
 <?php
