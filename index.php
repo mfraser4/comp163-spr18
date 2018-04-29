@@ -89,7 +89,7 @@
                // $dotenv->load();
                // $dotenv->required(['USER']);
                // $dotenv->required(['PASSWORD']);
-				   $user = getenv('USER');
+				   $user = getenv('MOOCH_USER');
                $password = getenv('PASSWORD');
                print $user;
                print $password;
