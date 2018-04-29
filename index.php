@@ -91,8 +91,6 @@
                // $dotenv->required(['PASSWORD']);
 				   $user = getenv('MOOCH_USER');
                $password = getenv('PASSWORD');
-               print $user;
-               print $password;
                if ($_POST['username'] == $user && 
                   $_POST['password'] == $password) {
                   $_SESSION['valid'] = true;
