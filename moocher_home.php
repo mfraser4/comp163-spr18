@@ -83,6 +83,12 @@ include("moocher_shared.php");
       <div>
         <input type="submit" value="Submit" /> 
       </div>
+    </form> 
+     <form action="archive_rent.php" method="get">  
+      <h2>To view the rent logs of transactions where one of the factors no longer exists, click below to view the archive</h2> 
+      <div>
+        <input type="submit" value="Archived rent logs" /> 
+      </div>
     </form>    
     <form action="logout.php" method="get">  
       <h2>To logout, click the logout button below...</h2> 

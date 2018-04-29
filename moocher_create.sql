@@ -1,163 +1,173 @@
-DROP DATABASE IF EXISTS Moochers_db;
-CREATE DATABASE IF NOT EXISTS Moochers_db;
-USE Moochers_db;
-
-DROP TABLE IF EXISTS Moochers;
-CREATE TABLE Moochers (
-	Member_id	INTEGER		PRIMARY KEY		NOT NULL,
-	Name		VARCHAR(20)	NOT NULL,
-	Email		VARCHAR(20)	NOT NULL,
-	Phone		Char(11)	NOT NULL,
-	Address		VARCHAR(50) NOT NULL
-	);
-
-DROP TABLE IF EXISTS Houses;
-CREATE TABLE Houses (
-	Name		VARCHAR(20)	PRIMARY KEY		NOT NULL,
-	Address		VARCHAR(50)	NOT NULL,
-	Email		VARCHAR(20) NOT NULL
-	);
-
-DROP TABLE IF EXISTS Items;
-CREATE TABLE Items (
-	Item_no		INTEGER			PRIMARY KEY		NOT NULL,
-	Name 		VARCHAR(40)		NOT NULL,
-	Amazon_URL	VARCHAR(200)	NOT NULL,
-	Quality		VARCHAR(9)		NOT NULL,
-	Home		VARCHAR(20)		NOT NULL,
-	CanMooch	BOOLEAN			NOT NULL,
-
-	FOREIGN KEY (Home) REFERENCES Houses(Name)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	);
-
-DROP TABLE IF EXISTS Media;
-CREATE TABLE Media (
-	Item_no				INTEGER			PRIMARY KEY		NOT NULL,
-	Genre				VARCHAR(15)		NOT NULL,
-	Year				INTEGER			NOT NULL,
-	Rated				VARCHAR(5)		NOT NULL,
-	Movie_TV_Game		VARCHAR(9)		NOT NULL,
-	Prod_Ch_Studio		VARCHAR(20)		NOT NULL,
-	Disc_type_Console	VARCHAR(8)		NOT NULL,
-
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	);
-
-DROP TABLE IF EXISTS Equipment;
-CREATE TABLE Equipment (
-	Item_no		INTEGER			PRIMARY KEY		NOT NULL,
-	Brand		VARCHAR(15)		NOT NULL,
-
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	);
-
-DROP TABLE IF EXISTS Sports_equipment;
-CREATE TABLE Sports_equipment (
-	Item_no		INTEGER			PRIMARY KEY		NOT NULL,
-	Sport		VARCHAR(10)		NOT NULL,
-	Quantity	INTEGER			NOT NULL,
-
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	);
-
-DROP TABLE IF EXISTS Musical_instruments;
-CREATE TABLE Musical_instruments (
-	Item_no				INTEGER			PRIMARY KEY		NOT NULL,
-	Instrument_type		VARCHAR(10)		NOT NULL,
-
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
-		ON DELETE CASCADE
-		ON UPDATE CASCADE
-	);
-
+DROP VIEW IF EXISTS Item_popularity;
+DROP VIEW IF EXISTS In_stock;
+DROP TABLE IF EXISTS Archived_rent_log;
+DROP TABLE IF EXISTS Rent_log;
+DROP TABLE IF EXISTS Residents;
+DROP TABLE IF EXISTS Customer_reviews;
 DROP TABLE IF EXISTS Holds;
+DROP TABLE IF EXISTS Musical_instruments;
+DROP TABLE IF EXISTS Sports_equipment;
+DROP TABLE IF EXISTS Equipment;
+DROP TABLE IF EXISTS Media;
+DROP TABLE IF EXISTS Items;
+DROP TABLE IF EXISTS Houses;
+DROP TABLE IF EXISTS Moochers;
+
+CREATE TABLE Moochers (
+	Member_id	INTEGER		PRIMARY KEY		NOT NULL DEFAULT '0',
+	Name		CHAR(30)	NOT NULL DEFAULT '',
+	Email		CHAR(30)	NOT NULL DEFAULT '',
+	Phone		Char(12)	NOT NULL DEFAULT '',
+	Address		CHAR(50) NOT NULL DEFAULT ''
+	);
+
+
+CREATE TABLE Houses (
+	Name		CHAR(30)	PRIMARY KEY		NOT NULL DEFAULT '',
+	Address		CHAR(50)	NOT NULL DEFAULT '',
+	Email		CHAR(30) NOT NULL DEFAULT ''
+	);
+
+
+CREATE TABLE Items (
+	Item_no		INTEGER			PRIMARY KEY		NOT NULL DEFAULT '0',
+	Name 		CHAR(40)		NOT NULL DEFAULT '',
+	Amazon_URL	CHAR(400)	NOT NULL DEFAULT '',
+	Quality		CHAR(9)		NOT NULL DEFAULT '',
+	Home		CHAR(30)		NOT NULL DEFAULT '',
+	CanMooch	BOOLEAN			NOT NULL DEFAULT 'false',
+
+	CONSTRAINT item_housing FOREIGN KEY (Home) REFERENCES Houses(Name)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+	);
+
+
+CREATE TABLE Media (
+	Item_no				INTEGER			PRIMARY KEY		NOT NULL DEFAULT '0',
+	Genre				CHAR(20)		NOT NULL DEFAULT '',
+	Year				INTEGER			NOT NULL DEFAULT '0',
+	Rated				CHAR(5)		NOT NULL DEFAULT '',
+	Movie_TV_Game		CHAR(9)		NOT NULL DEFAULT '',
+	Prod_Ch_Studio		CHAR(30)		NOT NULL DEFAULT '',
+	Disc_type_Console	CHAR(8)		NOT NULL DEFAULT '',
+
+	CONSTRAINT media_items FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+	);
+
+
+CREATE TABLE Equipment (
+	Item_no		INTEGER			PRIMARY KEY		NOT NULL DEFAULT '0',
+	Brand		CHAR(20)		NOT NULL DEFAULT '',
+
+	CONSTRAINT equipment_items FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+	);
+
+
+CREATE TABLE Sports_equipment (
+	Item_no		INTEGER			PRIMARY KEY		NOT NULL DEFAULT '0',
+	Sport		CHAR(10)		NOT NULL DEFAULT '',
+	Quantity	INTEGER			NOT NULL DEFAULT '0',
+
+	CONSTRAINT sports_items FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+	);
+
+
+CREATE TABLE Musical_instruments (
+	Item_no				INTEGER			PRIMARY KEY		NOT NULL DEFAULT '0',
+	Instrument_type		CHAR(10)		NOT NULL DEFAULT '',
+
+	CONSTRAINT music_items FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+	);
+
+
 CREATE TABLE Holds (
-	Item_no		INTEGER		NOT NULL,
-	Moocher_id	INTEGER		NOT NULL,
-	Queue_num	INTEGER		NOT NULL,
+	Item_no		INTEGER		NOT NULL DEFAULT '0',
+	Moocher_id	INTEGER		NOT NULL DEFAULT '0',
+	Queue_num	INTEGER		NOT NULL DEFAULT '0',
 	PRIMARY KEY (Item_no, Moocher_id),
 
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+	CONSTRAINT item_holds FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
 
-	FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
+	CONSTRAINT hold_moochers FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 	);
 
-DROP TABLE IF EXISTS Customer_reviews;
+
 CREATE TABLE Customer_reviews (
-	House_name	VARCHAR(20)		NOT NULL,
-	Moocher_id	INTEGER			NOT NULL,
-	Review 		VARCHAR(200)	NOT NULL,
-	Stars		INTEGER			NOT NULL,
+	House_name	CHAR(30)		NOT NULL DEFAULT '',
+	Moocher_id	INTEGER			NOT NULL DEFAULT '0',
+	Review 		CHAR(200)	NOT NULL DEFAULT '',
+	Stars		INTEGER			NOT NULL DEFAULT '0',
 	PRIMARY KEY (House_name, Moocher_id, Review),
 
-	FOREIGN KEY (House_name) REFERENCES Houses(Name)
+	CONSTRAINT customer_houses FOREIGN KEY (House_name) REFERENCES Houses(Name)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
 
-	FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
+	CONSTRAINT customer_moochers FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 	);
 
-DROP TABLE IF EXISTS Residents;
+
 CREATE TABLE Residents (
-	Resident_name	VARCHAR(20)	NOT NULL,
-	House_name		VARCHAR(20)	NOT NULL,
+	Resident_name	CHAR(30)	NOT NULL DEFAULT '',
+	House_name		CHAR(30)	NOT NULL DEFAULT '',
 	PRIMARY KEY (Resident_name, House_name),
 
-	FOREIGN KEY (House_name) REFERENCES Houses(Name)
+	CONSTRAINT residents_house FOREIGN KEY (House_name) REFERENCES Houses(Name)
 		ON UPDATE CASCADE
 		ON DELETE CASCADE
 	);
 
-DROP TABLE IF EXISTS Rent_log;
+
 CREATE TABLE Rent_log (
-	House_name	VARCHAR(20)	NOT NULL,
-	Item_no		INTEGER		NOT NULL,
-	Moocher_id	INTEGER		NOT NULL,
-	Rent_date	DATE 		NOT NULL,
-	Return_date	DATE 		NOT NULL,
+	House_name	CHAR(30)	NOT NULL DEFAULT '',
+	Item_no		INTEGER		NOT NULL DEFAULT '0',
+	Moocher_id	INTEGER		NOT NULL DEFAULT '0',
+	Rent_date	DATE 		NOT NULL DEFAULT '0001-01-01',
+	Return_date	DATE 		NOT NULL DEFAULT '0001-01-01',
 	PRIMARY KEY (House_name, Item_no, Moocher_id, Rent_date),
 
-	FOREIGN KEY (House_name) REFERENCES Houses(Name)
+	CONSTRAINT rent_house FOREIGN KEY (House_name) REFERENCES Houses(Name)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
 
-	FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
+	CONSTRAINT rent_moochers FOREIGN KEY (Moocher_id) REFERENCES Moochers(Member_id)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE,
 
-	FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
+	CONSTRAINT rent_items FOREIGN KEY (Item_no) REFERENCES Items(Item_no)
 		ON DELETE CASCADE
 		ON UPDATE CASCADE
 	);
 
-DROP TABLE IF EXISTS Archived_rent_log;
+
 CREATE TABLE Archived_rent_log (
-	House_name	VARCHAR(20)	NOT NULL,
-	Item_no		INTEGER		NOT NULL,
-	Moocher_id	INTEGER		NOT NULL,
-	Rent_date	DATE 		NOT NULL,
-	Return_date	DATE 		NOT NULL,
+	House_name	CHAR(30)	NOT NULL DEFAULT '',
+	Item_no		INTEGER		NOT NULL DEFAULT '0',
+	Moocher_id	INTEGER		NOT NULL DEFAULT '0',
+	Rent_date	DATE 		NOT NULL DEFAULT '0001-01-01',
+	Return_date	DATE 		NOT NULL DEFAULT '0001-01-01',
 	PRIMARY KEY (House_name, Item_no, Moocher_id, Rent_date)
 );
 
 CREATE VIEW In_stock AS
 SELECT DISTINCT I.Item_no, I.Name, I.Amazon_URL, I.Quality
 FROM items I, rent_log R
-WHERE I.CanMooch=1 AND ((NOT EXISTS (SELECT *
+WHERE I.CanMooch=true AND ((NOT EXISTS (SELECT *
                                     FROM rent_log R1
                                     WHERE I.Item_no=R1.Item_no)
                          )
