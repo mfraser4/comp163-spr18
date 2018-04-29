@@ -26,8 +26,7 @@ include("moocher_shared.php");
           }
           ?>
         </select>
-	Item Number:    <input type="text" name="item_id" value="">
-  (NOTE: By default, it will automatically be Moochable)<br>
+	Item Number:    <input type="text" name="item_id" value=""><br><br>
   <input type="submit" value="Reserve Item">
 </form>
     <form action="moocher_home.php" method="get">	  
