@@ -8,6 +8,11 @@ include("moocher_shared.php");
 		print_query();
 	?>
   </body>
+      <form action="moocher_home.php" method="get">	  
+      <div>
+        <input type="submit" value="Home" /> 
+      </div>
+    </form>
 </html>
 
 <?php
