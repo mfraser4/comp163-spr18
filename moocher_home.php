@@ -22,9 +22,11 @@ include("moocher_shared.php");
         </select>
 	   </div>
       <div>
-		<h2>Do you wish to see only currently available items, or items you can also put on hold?</h2>
-		<input type="radio" name="stock" value="In Stock">In Stock
-		<input type="radio" name="stock" value="either" checked="true">Don't Mind<br>
+		<h2>Do you wish to see only currently available items, items also on hold, or all items, even those hidden by the house owners?</h2>
+		<input type="radio" name="stock" value="in">In Stock
+		<input type="radio" name="stock" value="either">Hold and In Stock
+    <input type="radio" name="stock" value="else" checked="true">All Items
+
       </div>	  
       <div>
         <input type="submit" value="Submit" /> 
@@ -48,13 +50,13 @@ include("moocher_shared.php");
       <select name="houses[]" size="5" multiple="multiple">
         <option value="Any" selected='selected'>Any House</option>
         <?php //from here
-        $sql = "SELECT DISTINCT Name FROM houses ORDER BY Name";
+        $sql = "SELECT DISTINCT Name FROM houses ORDER BY Name ASC";
         $query = $db->prepare($sql); //prepares the query
         $query->execute();
         //runs the query
         $rows = $query->fetchAll();
         foreach($rows as $row){
-          $choice = $row["Name"];
+          $choice = $row[0];
           ?>
           <option value="<?= $choice ?>"><?= $choice ?></option><?php
         }
@@ -70,6 +72,25 @@ include("moocher_shared.php");
         <input type="submit" value="Submit" /> 
       </div>
     </form>
+     <form action="moocher_mooch.php" method="get">  
+      <h2>To view the Moochers table, click the submit button below</h2> 
+      <div>
+        <input type="submit" value="Submit" /> 
+      </div>
+    </form>
+     <form action="moocher_inserts.php" method="get">  
+      <h2>To insert, update, and delete from tables, click the submit button below</h2> 
+      <div>
+        <input type="submit" value="Submit" /> 
+      </div>
+    </form>    
+    <form action="logout.php" method="get">  
+      <h2>To logout, click the logout button below...</h2> 
+      <div>
+        <input type="submit" value="Logout" /> 
+      </div>
+    </form>
+
   </body>
 </html>
 

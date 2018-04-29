@@ -84,12 +84,20 @@
             
             if (isset($_POST['login']) && !empty($_POST['username']) 
                && !empty($_POST['password'])) {
-				
-               if ($_POST['username'] == 'tutorialspoint' && 
-                  $_POST['password'] == '1234') {
+               require 
+               __DIR__ 
+               . '/vendor/autoload.php';
+               $dotenv = new Dotenv\Dotenv(__DIR__);
+               $dotenv->load();
+               $dotenv->required(['USER']);
+               $dotenv->required(['PASSWORD']);
+				   $user = getenv('USER');
+               $password = getenv('PASSWORD');
+               if ($_POST['username'] == $user && 
+                  $_POST['password'] == $password) {
                   $_SESSION['valid'] = true;
                   $_SESSION['timeout'] = time();
-                  $_SESSION['username'] = 'tutorialspoint';
+                  $_SESSION['username'] = $user;
                   
                   echo 'You have entered valid use name and password';
                   header("Location: moocher_home.php");
@@ -107,10 +115,10 @@
             ?>" method = "post">
             <h4 class = "form-signin-heading"><?php echo $msg; ?></h4>
             <input type = "text" class = "form-control" 
-               name = "username" placeholder = "username = tutorialspoint" 
+               name = "username" placeholder = "username" 
                required autofocus></br>
             <input type = "password" class = "form-control"
-               name = "password" placeholder = "password = 1234" required>
+               name = "password" placeholder = "password" required>
             <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
                name = "login">Login</button>
          </form>
