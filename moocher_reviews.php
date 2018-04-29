@@ -1,8 +1,6 @@
 <?php
 include("top.html");
 include("moocher_shared.php");
-if (!$_SESSION['valid'])
-	header("Location: index.php");
 ?>
 	<br>
 	<p>Thanks for your submission!</p>
