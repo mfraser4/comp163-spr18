@@ -18,6 +18,11 @@ include("moocher_shared.php");
 	<form action="screenshot2.html" method="get">
 	<!-- <input type="submit" value="Adventure Screenshot" /> -->
 	</form>
+  	<form action="moocher_home.php" method="get">	  
+      <div>
+        <input type="submit" value="Home" /> 
+      </div>
+    </form>
   </body>
 </html>
 
