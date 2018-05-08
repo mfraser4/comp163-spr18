@@ -41,6 +41,7 @@ function print_query() {
 	include("moocher_shared.php");
 	$items = $_GET["item_type"];
 	$in_stock = $_GET["stock"];
+	$quality = $_GET["quality"];
 	$sql = '';
 
 	if ("in" == $in_stock)
@@ -49,6 +50,9 @@ function print_query() {
 		$sql = "SELECT Item_no,Name,Quality,Amazon_URL FROM items WHERE CanMooch=true ";
 	if ($in_stock == "else")
 		$sql = "SELECT Item_no,Name,Quality,Amazon_URL FROM items WHERE true ";
+
+	if (!in_array("Any", $quality))
+		$sql .= "AND Quality IN ('" . implode("','",$quality) . "') ";
 
 	$flag = 0;
 	if (in_array("Any", $items))

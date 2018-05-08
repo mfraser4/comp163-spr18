@@ -19,7 +19,23 @@ include("moocher_shared.php");
           <option value="TV Show">TV Shows</option>
           <option value="sports_equipment">Sports Equipment</option>
           <option value="musical_instruments">Musical Instruments</option>
-        </select>
+        </select>   
+      <p>Which quality types do you prefer to see?</p>
+      <select name="quality[]" size="5" multiple="multiple">
+        <option value="Any" selected='selected'>Any</option>
+        <?php //from here
+        $sql = "SELECT DISTINCT Quality FROM items";
+        $query = $db->prepare($sql); //prepares the query
+        $query->execute();
+        //runs the query
+        $rows = $query->fetchAll();
+        foreach($rows as $row){
+          $choice = $row[0];
+          ?>
+          <option value="<?= $choice ?>"><?= $choice ?></option><?php
+        }
+        ?>
+      </select>
 	   </div>
       <div>
 		<h2>Do you wish to see only currently available items, items also on hold, or all items, even those hidden by the house owners?</h2>
