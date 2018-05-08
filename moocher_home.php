@@ -20,7 +20,7 @@ include("moocher_shared.php");
           <option value="sports_equipment">Sports Equipment</option>
           <option value="musical_instruments">Musical Instruments</option>
         </select>   
-      <p>Which quality types do you prefer to see?</p>
+      <h2>Which quality types do you prefer to see?</h2>
       <select name="quality[]" size="5" multiple="multiple">
         <option value="Any" selected='selected'>Any</option>
         <?php //from here
