@@ -9,7 +9,7 @@ include("moocher_shared.php");
 	<?php
 		print_houses();
 	?>
-	<p>...where they have <?php print_rating(); ?> stars or better.</p>
+	<p>...where they have <?php print_rating(); ?> stars.</p>
 	
     <h2>Reviews that fit your search parameters are:</h2>
 	<?php
